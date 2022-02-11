@@ -2,6 +2,8 @@
 
 [About](#about) /
 [Changelog](#changelog) /
+[Environment](#environment) /
+[Deploy](#deploy) /
 [Contact](#contact)
 
 ## About
@@ -11,7 +13,7 @@ Networking service concept developed under the [Practicum](https://practicum.yan
 
 ## Changelog
 Release 20220211:
-* docs(./README.md): repositary init, venv && Django setup
+* docs(./README.md): repository init, venv && Django setup
 
 ## Environment
 * `source venv/bin/activate` initiates virtual environment
