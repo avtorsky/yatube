@@ -12,6 +12,9 @@ Networking service concept developed under the [Practicum](https://practicum.yan
 * Django 2.2.19
 
 ## Changelog
+Release 20220219:
+* feat(./yatube/posts/): static, templates markup && initial ORM setup
+
 Release 20220212:
 * fix(\_\_pycache\_\_): include all cache directories to .gitignore
 
