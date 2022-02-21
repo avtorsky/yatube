@@ -12,6 +12,9 @@ Networking service concept developed under the [Practicum](https://practicum.yan
 * Django 2.2.19
 
 ## Changelog
+Release 20220222:
+* fix(./yatube/posts/): admin.py PEP8 linting && models.py style improvements after code review
+
 Release 20220219:
 * feat(./yatube/posts/): static, templates markup && initial ORM setup
 
