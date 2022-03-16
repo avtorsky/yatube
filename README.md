@@ -8,10 +8,18 @@
 
 ## About
 Networking service concept developed under the [Practicum](https://practicum.yandex.com/) online bootcamp with the following stack:
-* Python 3.7
+* Python 3.7.9
 * Django 2.2.19
+* SQLite 3.32.3
 
 ## Changelog
+Release 20220317:
+* feat(./yatube/): filebased.EmailBackend init
+* feat(./yatube/about/): TemplateView pages setup
+* feat(./yatube/core/): context_processors && css templatetags init
+* feat(./yatube/posts/): profile, post_detail, post_create, post_edit views && routes setup
+* feat(./yatube/users/): override auth templates
+
 Release 20220222:
 * fix(./yatube/posts/): admin.py PEP8 linting && models.py style improvements after code review
 
