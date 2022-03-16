@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+{% load static %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12 col-xs-12 col-sm-6 col-md-5 col-lg-4">
+      <img src="{% static 'img/author__image.png' %}" width="250" height="250"
+        class="d-inline-block align-top rounded-circle" alt="Умный, красивый, в меру упитанный мужчина">
+    </div>
+    <div class="col-12 col-xs-12 col-sm-6 col-md-7 col-lg-8">
+      <h1 class="text-left">avtorsky</h1>
+      <p class="text-left">Младший каратель багов</p>
+      <p class="text-left">
+        Выучился на frontend-разработчика, но вёрстка интерфейсов мне давалась со скрипом в пальцах. На последних
+        спринтах наc погрузили в серверную часть работы веб-приложений на NodeJS/Express, именно тогда решил продолжить
+        обучение на
+        backend-факультете.
+      </p>
+      <p class="text-left">
+        Ожидал, что для начинающего backend-разработчика вопрос вёрстки будет закрыт навсегда, но потерпел фиаско
+        &#128579;
+      </p>
+      <p class="text-left">
+        Надеюсь, вам нравится эта страничка и её вёрстка, так как мне пришлось постараться, чтобы получилось по
+        красоте.
+      </p>
+
+      <a href="https://github.com/avtorsky" target="_blank" rel="noreferrer">github.com/avtorsky</a>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
