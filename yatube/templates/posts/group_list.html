@@ -17,7 +17,7 @@
       </li>
     </ul>
     <p>
-      {{ post.text }}
+      {{ post.text|linebreaksbr }}
     </p>
     {% if not forloop.last %}
     <hr>{% endif %}
