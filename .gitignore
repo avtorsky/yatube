@@ -11,4 +11,11 @@ vscode/
 __pycache__/
 **/__pycache__
 
+# Static
 **/static
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal

@@ -24,7 +24,7 @@
       </ul>
     </aside>
     <article class="col-12 col-md-9">
-      <p>{{ post.text }}</p>
+      <p>{{ post.text|linebreaksbr }}</p>
       {% if user == post.author %}
       <a href="{% url 'posts:post_edit' post_id=post.id  %}">
         <button type="submit" class="btn btn-primary">

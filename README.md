@@ -13,6 +13,10 @@ Networking service concept developed under the [Practicum](https://practicum.yan
 * SQLite 3.32.3
 
 ## Changelog
+Release 20220319:
+fix(./yatube/): db.sqlite3 config to .gitignore
+fix(./yatube/posts/): models.py immutable ordering && memory improvements
+
 Release 20220317:
 * feat(./yatube/): filebased.EmailBackend init
 * feat(./yatube/about/): TemplateView pages setup
