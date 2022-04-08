@@ -13,9 +13,14 @@ Networking service concept developed under the [Practicum](https://practicum.yan
 * SQLite 3.32.3
 
 ## Changelog
+Release 20220407:
+* feat(./yatube/about/): add unit testing for static views(100%)
+* feat(./yatube/posts/): alter Post model, add unit testing for models(100%), urlpatterns(100%), views(98%) && forms(100%)
+* feat(./yatube/users/): add unit testing for urlpatterns(100%), views(100%) && forms(100%)
+
 Release 20220319:
-fix(./yatube/): db.sqlite3 config to .gitignore
-fix(./yatube/posts/): models.py immutable ordering && memory improvements
+* fix(./yatube/): db.sqlite3 config to .gitignore
+* fix(./yatube/posts/): models.py immutable ordering && memory improvements
 
 Release 20220317:
 * feat(./yatube/): filebased.EmailBackend init
@@ -42,6 +47,8 @@ Release 20220211:
 * `pip install -r requirements.txt` installing all dependencies
 
 ## Deploy
+* `coverage run --source='about,posts,users' manage.py test -v 2` initiate unit testing
+* `coverage report` view unit testing report
 * `python3 manage.py runserver` initiates an HTTP server
 
 ## Contact

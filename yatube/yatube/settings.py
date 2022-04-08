@@ -7,7 +7,12 @@ SECRET_KEY = 't)v)_23vfrpxplel-_@regncdq80@g4xk_^!51q^7zk%rar2=l'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'testserver',
+]
 
 INSTALLED_APPS = [
     'posts.apps.PostsConfig',

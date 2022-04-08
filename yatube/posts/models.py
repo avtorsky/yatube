@@ -19,10 +19,16 @@ class Group(models.Model):
 
 
 class Post(models.Model):
-    text = models.TextField('Текст поста')
+    text = models.TextField(
+        'Текст поста',
+        help_text='Напечатайте сообщение',
+    )
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='posts'
+        User,
+        on_delete=models.CASCADE,
+        related_name='posts',
+        verbose_name='Автор сообщения',
     )
     group = models.ForeignKey(
         Group,
@@ -30,6 +36,8 @@ class Post(models.Model):
         null=True,
         on_delete=models.SET_NULL,
         related_name='group_post',
+        help_text='Выберите группу для публикации сообщения',
+        verbose_name='Группа сообщения',
     )
 
     def __str__(self):
