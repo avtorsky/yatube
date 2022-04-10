@@ -1,7 +1,10 @@
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
 
 from http import HTTPStatus
+
+AUTHOR_VIEW = reverse('about:author')
+TECH_VIEW = reverse('about:tech')
 
 
 class AboutViewTests(TestCase):
@@ -12,8 +15,8 @@ class AboutViewTests(TestCase):
         """Проверяем, что статические views используют
         соответствующий шаблон."""
         namespace_names = {
-            reverse('about:author'): 'about/author.html',
-            reverse('about:tech'): 'about/tech.html',
+            AUTHOR_VIEW: 'about/author.html',
+            TECH_VIEW: 'about/tech.html',
         }
         for name, template in namespace_names.items():
             with self.subTest(name=name):
@@ -24,8 +27,8 @@ class AboutViewTests(TestCase):
         """Проверяем, что статические views доступны
         неавторизованным пользователям."""
         namespace_names = (
-            reverse('about:author'),
-            reverse('about:tech'),
+            AUTHOR_VIEW,
+            TECH_VIEW,
         )
         for name in namespace_names:
             with self.subTest():

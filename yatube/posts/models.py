@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-
 User = get_user_model()
 
 
@@ -10,12 +9,12 @@ class Group(models.Model):
     slug = models.SlugField('Человекопонятный URL', unique=True)
     description = models.TextField('Описание группы')
 
+    class Meta:
+        ordering = ('title',)
+        verbose_name_plural = 'Группы'
+
     def __str__(self):
         return self.title
-
-    class Meta:
-        ordering = ['title']
-        verbose_name_plural = 'Группы'
 
 
 class Post(models.Model):
@@ -40,9 +39,9 @@ class Post(models.Model):
         verbose_name='Группа сообщения',
     )
 
+    class Meta:
+        ordering = ('-pub_date',)
+        verbose_name_plural = 'Посты'
+
     def __str__(self):
         return self.text
-
-    class Meta:
-        ordering = tuple(['-pub_date'])
-        verbose_name_plural = 'Посты'

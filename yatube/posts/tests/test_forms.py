@@ -1,13 +1,12 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 from django.urls import reverse
 from django import forms
 
 from http import HTTPStatus
 
-from ..models import Group, Post
+from ..models import Group, Post, User
 
-User = get_user_model()
+POST_CREATE_VIEW = reverse('posts:post_create')
 
 
 class PostsFormTests(TestCase):
@@ -25,6 +24,15 @@ class PostsFormTests(TestCase):
             text='Привет, друг',
             group=cls.group,
         )
+        cls.PROFILE_VIEW = reverse(
+            'posts:profile', kwargs={'username': cls.user.username}
+        )
+        cls.POST_DETAIL_VIEW = reverse(
+            'posts:post_detail', kwargs={'post_id': cls.post.pk}
+        )
+        cls.POST_EDIT_VIEW = reverse(
+            'posts:post_edit', kwargs={'post_id': cls.post.pk}
+        )
 
     def setUp(self):
         self.guest_client = Client()
@@ -33,7 +41,7 @@ class PostsFormTests(TestCase):
 
     def test_posts_form_is_vaild(self):
         """Проверяем, что форма использует валидный context."""
-        response = self.authorized_client.get(reverse('posts:post_create'))
+        response = self.authorized_client.get(POST_CREATE_VIEW)
         self.assertIsInstance(
             response.context['form'].fields['text'],
             forms.fields.CharField,
@@ -53,7 +61,7 @@ class PostsFormTests(TestCase):
             'group': self.post.group.pk,
         }
         response = self.authorized_client.post(
-            reverse('posts:post_create'),
+            POST_CREATE_VIEW,
             data=form_data,
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
@@ -63,11 +71,12 @@ class PostsFormTests(TestCase):
                 author=self.post.author,
                 text=self.post.text,
                 group=self.post.group.pk,
-            ).exists()
+            ).exists(),
+            Post.objects.latest('pub_date'),
         )
         self.assertRedirects(
             response,
-            reverse('posts:profile', kwargs={'username': self.user.username}),
+            self.PROFILE_VIEW,
         )
 
     def test_posts_valid_form_edit_post_entry_in_db(self):
@@ -77,10 +86,7 @@ class PostsFormTests(TestCase):
             'text': 'Привет, отредактированный друг.',
         }
         response = self.authorized_client.post(
-            reverse(
-                'posts:post_edit',
-                kwargs={'post_id': self.post.pk},
-            ),
+            self.POST_EDIT_VIEW,
             data=form_data,
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
@@ -88,5 +94,5 @@ class PostsFormTests(TestCase):
         self.assertEqual(self.post.text, form_data['text'])
         self.assertRedirects(
             response,
-            reverse('posts:post_detail', kwargs={'post_id': self.post.pk}),
+            self.POST_DETAIL_VIEW,
         )
