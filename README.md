@@ -13,6 +13,9 @@ Networking service concept developed under the [Practicum](https://practicum.yan
 * SQLite 3.32.3
 
 ## Changelog
+Release 20220410:
+* fix(./yatube/): PEP8 linting && unit testing imporvements after code review
+
 Release 20220407:
 * feat(./yatube/about/): add unit testing for static views(100%)
 * feat(./yatube/posts/): alter Post model, add unit testing for models(100%), urlpatterns(100%), views(98%) && forms(100%)

@@ -1,11 +1,13 @@
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.test import TestCase, Client
 from django.urls import reverse
 from django import forms
 
-from ..models import Group, Post
+from ..models import Group, Post, User
 
-User = get_user_model()
+INDEX_VIEW = reverse('posts:index')
+POST_CREATE_VIEW = reverse('posts:post_create')
+OBJECTS_PER_PAGE = settings.PAGINATOR_SLICING_CONFIG
 
 
 class PostsViewTests(TestCase):
@@ -23,6 +25,18 @@ class PostsViewTests(TestCase):
             text='Привет, друг',
             group=cls.group,
         )
+        cls.GROUP_VIEW = reverse(
+            'posts:group_list', kwargs={'slug': cls.group.slug}
+        )
+        cls.PROFILE_VIEW = reverse(
+            'posts:profile', kwargs={'username': cls.user.username}
+        )
+        cls.POST_DETAIL_VIEW = reverse(
+            'posts:post_detail', kwargs={'post_id': cls.post.pk}
+        )
+        cls.POST_EDIT_VIEW = reverse(
+            'posts:post_edit', kwargs={'post_id': cls.post.pk}
+        )
 
     def setUp(self):
         self.guest_client = Client()
@@ -39,20 +53,12 @@ class PostsViewTests(TestCase):
     def test_posts_views_valid_templates(self):
         """Проверяем, что views используют соответствующий шаблон."""
         namespace_names = {
-            reverse('posts:index'): 'posts/index.html',
-            reverse(
-                'posts:group_list', kwargs={'slug': self.group.slug}
-            ): 'posts/group_list.html',
-            reverse(
-                'posts:profile', kwargs={'username': self.user.username}
-            ): 'posts/profile.html',
-            reverse(
-                'posts:post_detail', kwargs={'post_id': self.post.pk}
-            ): 'posts/post_detail.html',
-            reverse('posts:post_create'): 'posts/create_post.html',
-            reverse(
-                'posts:post_edit', kwargs={'post_id': self.post.pk}
-            ): 'posts/create_post.html',
+            INDEX_VIEW: 'posts/index.html',
+            self.GROUP_VIEW: 'posts/group_list.html',
+            self.PROFILE_VIEW: 'posts/profile.html',
+            self.POST_DETAIL_VIEW: 'posts/post_detail.html',
+            POST_CREATE_VIEW: 'posts/create_post.html',
+            self.POST_EDIT_VIEW: 'posts/create_post.html',
         }
         for name, template in namespace_names.items():
             with self.subTest(name=name):
@@ -62,41 +68,35 @@ class PostsViewTests(TestCase):
     def test_posts_index_page_valid_context(self):
         """Проверяем, что во view элемента главной страницы отрисован
         правильный context."""
-        response = self.guest_client.get(reverse('posts:index'))
+        response = self.guest_client.get(INDEX_VIEW)
         self.context_validation_config(response.context['page_obj'][0])
 
     def test_posts_group_page_valid_context(self):
         """Проверяем, что во view элемента страницы группы отрисован
         правильный context."""
-        response = self.guest_client.get(
-            reverse('posts:group_list', kwargs={'slug': self.group.slug})
-        )
+        response = self.guest_client.get(self.GROUP_VIEW)
         self.assertEqual(response.context['group'], self.group)
         self.context_validation_config(response.context['page_obj'][0])
 
     def test_posts_profile_page_valid_context(self):
         """Проверяем, что во view элемента страницы профиля отрисован
         правильный context."""
-        response = self.guest_client.get(
-            reverse('posts:profile', kwargs={'username': self.user.username})
-        )
+        response = self.guest_client.get(self.PROFILE_VIEW)
         self.assertEqual(response.context['author'], self.user)
         self.context_validation_config(response.context['page_obj'][0])
 
     def test_posts_post_page_valid_context(self):
         """Проверяем, что во view страницы просмотра сообщения отрисован
         правильный context."""
-        response = self.guest_client.get(
-            reverse('posts:post_detail', kwargs={'post_id': self.post.pk})
-        )
+        response = self.guest_client.get(self.POST_DETAIL_VIEW)
         self.context_validation_config(response.context['post'])
 
     def test_posts_create_edit_page_valid_context(self):
         """Проверяем, что во view страницы создания/редактирования сообщения
         отрисована форма с правильным context."""
         context_config = (
-            reverse('posts:post_create'),
-            reverse('posts:post_edit', kwargs={'post_id': self.post.pk}),
+            POST_CREATE_VIEW,
+            self.POST_EDIT_VIEW,
         )
         for item in context_config:
             with self.subTest(item=item):
@@ -138,18 +138,24 @@ class PostsAttributionTests(TestCase):
             group=self.author_group,
         )
 
+        self.TARGET_GROUP_VIEW = reverse(
+            'posts:group_list', kwargs={'slug': self.author_group.slug}
+        )
+        self.YET_ANOTHER_GROUP_VIEW = reverse(
+            'posts:group_list', kwargs={'slug': self.bot_group.slug}
+        )
+        self.TARGET_PROFILE_VIEW = reverse(
+            'posts:profile', kwargs={'username': self.author.username}
+        )
+
     def test_posts_new_post_renders_at_relevant_page(self):
         """Проверяем, что во views главной страницы, страницы группы
         и профиле автора отрисовано новое сообщение автора
         с правильным context."""
         views_config = (
-            reverse('posts:index'),
-            reverse(
-                'posts:group_list', kwargs={'slug': self.author_group.slug}
-            ),
-            reverse(
-                'posts:profile', kwargs={'username': self.author.username}
-            ),
+            INDEX_VIEW,
+            self.TARGET_GROUP_VIEW,
+            self.TARGET_PROFILE_VIEW,
         )
         for view in views_config:
             with self.subTest(view=view):
@@ -159,9 +165,7 @@ class PostsAttributionTests(TestCase):
     def test_posts_new_post_no_render_at_irrelevant_page(self):
         """Проверяем, что во view страницы нецелевой группы новое целевое
         сообщение автора не отрисовано."""
-        view = reverse(
-            'posts:group_list', kwargs={'slug': self.bot_group.slug}
-        )
+        view = self.YET_ANOTHER_GROUP_VIEW
         response = self.bot_client.get(view)
         self.assertEqual(len(response.context.get('page_obj')), 0)
 
@@ -187,6 +191,13 @@ class PostsPaginatorViewTests(TestCase):
             )
         Post.objects.bulk_create(cls.posts)
 
+        cls.PAGINATOR_GROUP_VIEW = reverse(
+            'posts:group_list', kwargs={'slug': cls.group.slug}
+        )
+        cls.PAGINATOR_PROFILE_VIEW = reverse(
+            'posts:profile', kwargs={'username': cls.user.username}
+        )
+
     def setUp(self):
         self.guest_client = Client()
 
@@ -194,13 +205,17 @@ class PostsPaginatorViewTests(TestCase):
         """Проверяем, что для всех релевантных views пагинатор слайсит
         по 10 постов на страницу."""
         paginator_views_config = (
-            reverse('posts:index'),
-            reverse('posts:group_list', kwargs={'slug': self.group.slug}),
-            reverse('posts:profile', kwargs={'username': self.user.username}),
+            INDEX_VIEW,
+            self.PAGINATOR_GROUP_VIEW,
+            self.PAGINATOR_PROFILE_VIEW,
         )
         for view in paginator_views_config:
             with self.subTest(view=view):
                 response = self.guest_client.get(view)
-                self.assertEqual(len(response.context.get('page_obj')), 10)
+                self.assertEqual(
+                    len(response.context.get('page_obj')), OBJECTS_PER_PAGE
+                )
                 response = self.guest_client.get(view + '?page=2')
-                self.assertEqual(len(response.context.get('page_obj')), 10)
+                self.assertEqual(
+                    len(response.context.get('page_obj')), OBJECTS_PER_PAGE
+                )

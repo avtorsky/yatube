@@ -1,6 +1,5 @@
 import os
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 't)v)_23vfrpxplel-_@regncdq80@g4xk_^!51q^7zk%rar2=l'
@@ -67,6 +66,8 @@ DATABASES = {
     }
 }
 
+DEFAULT_LABEL_VALUE = '-пусто-'
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -92,6 +93,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+PAGINATOR_SLICING_CONFIG = 10
 
 STATIC_URL = '/static/'
 

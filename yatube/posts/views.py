@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
@@ -5,12 +6,14 @@ from django.contrib.auth.decorators import login_required
 from .models import Group, Post, User
 from .forms import PostForm
 
+OBJECTS_PER_PAGE = settings.PAGINATOR_SLICING_CONFIG
+
 
 def index(request):
     template = 'posts/index.html'
     text = 'Новостная лента проекта Yatube'
     posts_list = Post.objects.all()
-    paginator = Paginator(posts_list, 10)
+    paginator = Paginator(posts_list, OBJECTS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -25,7 +28,7 @@ def group_posts(request, slug):
     text = f'Новости группы {slug} на Yatube'
     group = get_object_or_404(Group, slug=slug)
     posts_list = group.group_post.all()
-    paginator = Paginator(posts_list, 10)
+    paginator = Paginator(posts_list, OBJECTS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -41,13 +44,12 @@ def profile(request, username):
     text = 'Профайл пользователя'
     profile = get_object_or_404(User, username=username)
     posts_list = profile.posts.all()
-    paginator = Paginator(posts_list, 10)
+    paginator = Paginator(posts_list, OBJECTS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
         'text': text,
         'author': profile,
-        'posts_count': posts_list.count(),
         'page_obj': page_obj,
         'paginator': paginator,
     }
@@ -57,10 +59,8 @@ def profile(request, username):
 def post_detail(request, post_id):
     template = 'posts/post_detail.html'
     post = get_object_or_404(Post, id=post_id)
-    posts_count = Post.objects.filter(author=post.author).all().count()
     context = {
         'post': post,
-        'posts_count': posts_count,
     }
     return render(request, template, context)
 
