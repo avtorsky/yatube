@@ -2,6 +2,16 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+CSRF_FAILURE_VIEW = 'core.views.csrf_error'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
+
+POSTS_INDEX_CACHE_KEY = 'index_page'
+
 SECRET_KEY = 't)v)_23vfrpxplel-_@regncdq80@g4xk_^!51q^7zk%rar2=l'
 
 DEBUG = True
@@ -24,7 +34,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sorl.thumbnail',
 ]
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

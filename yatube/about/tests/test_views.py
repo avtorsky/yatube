@@ -1,7 +1,7 @@
+from http import HTTPStatus
+
 from django.test import Client, TestCase
 from django.urls import reverse
-
-from http import HTTPStatus
 
 AUTHOR_VIEW = reverse('about:author')
 TECH_VIEW = reverse('about:tech')

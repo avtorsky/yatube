@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import Post
+from .models import Comment, Post
 
 
 class PostForm(ModelForm):
@@ -14,6 +14,17 @@ class PostForm(ModelForm):
 
     class Meta:
         model = Post
-        fields = ('text', 'group')
-        labels = {'group': 'Группа сообщения'}
-        help_texts = {'group': 'Выберите группу для публикации сообщения'}
+        fields = ('text', 'group', 'image')
+
+
+class CommentForm(ModelForm):
+    text = forms.CharField(
+        widget=forms.Textarea,
+        label='Текст комментария',
+        required=True,
+        help_text='Напечатайте или отредактируйте комментарий',
+    )
+
+    class Meta:
+        model = Comment
+        fields = ('text',)

@@ -1,6 +1,6 @@
-from django.test import TestCase, Client
-
 from http import HTTPStatus
+
+from django.test import Client, TestCase
 
 from ..models import Group, Post, User
 
@@ -27,6 +27,7 @@ class PostsURLTests(TestCase):
         cls.PROFILE_PATH = f'/profile/{cls.user.username}/'
         cls.POST_DETAIL_PATH = f'/posts/{cls.post.pk}/'
         cls.POST_EDIT_PATH = f'/posts/{cls.post.pk}/edit/'
+        cls.POST_COMMENT_PATH = f'/posts/{cls.post.pk}/comment/'
 
     def setUp(self):
         self.guest_client = Client()
@@ -91,3 +92,17 @@ class PostsURLTests(TestCase):
         404 HTTP-статус."""
         response = self.guest_client.get(NOT_FOUND_PATH)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+    def test_posts_comment_url_available_for_authorized_users(self):
+        """Проверяем, что URL-адрес /posts/{id}/comment/ доступен только
+        авторизованному пользователю, неавторизованный перенаправляется
+        на страницу авторизации."""
+        response = self.guest_client.get(self.POST_COMMENT_PATH)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(
+            response, f'/auth/login/?next={self.POST_COMMENT_PATH}'
+        )
+        response = self.authorized_client.get(
+            self.POST_COMMENT_PATH, follow=True
+        )
+        self.assertEqual(response.status_code, HTTPStatus.OK)

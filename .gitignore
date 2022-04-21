@@ -12,6 +12,7 @@ __pycache__/
 **/__pycache__
 
 # Static
+**/media
 **/static
 **/sent_emails
 

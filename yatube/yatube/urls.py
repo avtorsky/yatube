@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 
 urlpatterns = [
     path('about/', include('about.urls', namespace='about')),
@@ -8,3 +8,8 @@ urlpatterns = [
     path('auth/', include('django.contrib.auth.urls')),
     path('', include('posts.urls', namespace='posts')),
 ]
+
+handler400 = 'core.views.bad_request'
+handler403 = 'core.views.permission_denied'
+handler404 = 'core.views.page_not_found'
+handler500 = 'core.views.server_error'

@@ -13,6 +13,11 @@ Networking service concept developed under the [Practicum](https://practicum.yan
 * SQLite 3.32.3
 
 ## Changelog
+Release 20220421:
+* feat(./yatube/core/): error response custom routing
+* feat(./yatube/posts/): media distribution cache setup && comments MVT configuration
+* ci(./lintme.sh): linting && unit testing pipe setup
+
 Release 20220410:
 * fix(./yatube/): PEP8 linting && unit testing imporvements after code review
 
@@ -50,9 +55,8 @@ Release 20220211:
 * `pip install -r requirements.txt` installing all dependencies
 
 ## Deploy
-* `coverage run --source='about,posts,users' manage.py test -v 2` initiate unit testing
-* `coverage report` view unit testing report
-* `python3 manage.py runserver` initiates an HTTP server
+* `bash linting-pipe.sh` initiate linting && unit testing pipe
+* `source venv/bin/activate && cd yatube && python3 manage.py runserver` stage an HTTP server
 
 ## Contact
 __GitHub:__ <a href="https://github.com/avtorsky" target="_blank">https://github.com/avtorsky</a>
