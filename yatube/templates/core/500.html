@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ text }}{% endblock %}
+{% block content %}
+{% load static %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12 col-xs-12 col-sm-6 col-md-5 col-lg-4">
+      <img src="{% static 'img/error__image.png' %}" width="250" height="250"
+        class="d-inline-block align-top rounded-circle" alt="Ошибка 500 - Ошибка обработки запроса на сервере.">
+    </div>
+    <div class="col-12 col-xs-12 col-sm-6 col-md-7 col-lg-8">
+      <h1 class="text-left">{{ text }}</h1>
+      <p class="text-left">
+        Но ничего страшного - перейдите на <a href="{% url 'posts:index' %}">главную страницу</a> и попробуйте чуть
+        позже ещё раз &#128579;
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

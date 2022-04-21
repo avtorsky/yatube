@@ -1,6 +1,6 @@
-from django.test import Client, TestCase
-
 from http import HTTPStatus
+
+from django.test import Client, TestCase
 
 AUTHOR_PATH = '/about/author/'
 TECH_PATH = '/about/tech/'
