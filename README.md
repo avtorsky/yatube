@@ -13,6 +13,9 @@ Networking service concept developed under the [Practicum](https://practicum.yan
 * SQLite 3.32.3
 
 ## Changelog
+Release 20220424:
+* fix(./yatube/posts/): MVT improvements after code review
+
 Release 20220421:
 * feat(./yatube/core/): error response custom routing
 * feat(./yatube/posts/): media distribution cache setup && comments MVT configuration

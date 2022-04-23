@@ -9,38 +9,38 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("posts", "0009_auto_20220416_2132"),
+        ('posts', '0009_auto_20220416_2132'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Follow",
+            name='Follow',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.AutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
                 (
-                    "author",
+                    'author',
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="following",
+                        related_name='following',
                         to=settings.AUTH_USER_MODEL,
-                        verbose_name="Автор в подписке",
+                        verbose_name='Автор в подписке',
                     ),
                 ),
                 (
-                    "user",
+                    'user',
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="follower",
+                        related_name='follower',
                         to=settings.AUTH_USER_MODEL,
-                        verbose_name="Подписчик",
+                        verbose_name='Подписчик',
                     ),
                 ),
             ],
