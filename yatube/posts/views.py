@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_GET
 
 from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post, User
@@ -11,6 +12,7 @@ OBJECTS_PER_PAGE = settings.PAGINATOR_SLICING_CONFIG
 CACHE_KEY = settings.POSTS_INDEX_CACHE_KEY
 
 
+@require_GET
 def index(request):
     template = 'posts/index.html'
     text = 'Новостная лента проекта Yatube'
@@ -56,14 +58,12 @@ def profile(request, username):
         author=profile,
         user=request.user,
     )
-    followers_count = Follow.objects.filter(author=profile).count()
     context = {
         'text': text,
         'author': profile,
         'page_obj': page_obj,
         'paginator': paginator,
         'following': following,
-        'followers_count': followers_count,
     }
     return render(request, template, context)
 

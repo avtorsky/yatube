@@ -68,7 +68,7 @@ class Comment(models.Model):
         help_text='Напечатайте комментарий',
     )
     created = models.DateTimeField(
-        'Время публикации комментария', auto_now_add=True
+        'Дата и время комментария', auto_now_add=True
     )
 
     class Meta:
@@ -93,5 +93,13 @@ class Follow(models.Model):
         verbose_name='Автор в подписке',
     )
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=('user', 'author'), name='profile_follow_rule'
+            ),
+        ]
+        verbose_name_plural = 'Подписчики'
+
     def __str__(self):
-        return self.text
+        return self.user.username

@@ -7,61 +7,61 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("posts", "0003_auto_20220221_1732"),
+        ('posts', '0003_auto_20220221_1732'),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name="group",
-            options={"ordering": ["title"], "verbose_name_plural": "Группы"},
+            name='group',
+            options={'ordering': ['title'], 'verbose_name_plural': 'Группы'},
         ),
         migrations.AlterModelOptions(
-            name="post",
+            name='post',
             options={
-                "ordering": ["-pub_date"],
-                "verbose_name_plural": "Посты",
+                'ordering': ['-pub_date'],
+                'verbose_name_plural': 'Посты',
             },
         ),
         migrations.AlterField(
-            model_name="group",
-            name="description",
-            field=models.TextField(verbose_name="Описание группы"),
+            model_name='group',
+            name='description',
+            field=models.TextField(verbose_name='Описание группы'),
         ),
         migrations.AlterField(
-            model_name="group",
-            name="slug",
+            model_name='group',
+            name='slug',
             field=models.SlugField(
-                unique=True, verbose_name="Человекопонятный URL"
+                unique=True, verbose_name='Человекопонятный URL'
             ),
         ),
         migrations.AlterField(
-            model_name="group",
-            name="title",
+            model_name='group',
+            name='title',
             field=models.CharField(
-                max_length=200, verbose_name="Название группы"
+                max_length=200, verbose_name='Название группы'
             ),
         ),
         migrations.AlterField(
-            model_name="post",
-            name="group",
+            model_name='post',
+            name='group',
             field=models.ForeignKey(
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
-                related_name="group_post",
-                to="posts.Group",
+                related_name='group_post',
+                to='posts.Group',
             ),
         ),
         migrations.AlterField(
-            model_name="post",
-            name="pub_date",
+            model_name='post',
+            name='pub_date',
             field=models.DateTimeField(
-                auto_now_add=True, verbose_name="Дата публикации"
+                auto_now_add=True, verbose_name='Дата публикации'
             ),
         ),
         migrations.AlterField(
-            model_name="post",
-            name="text",
-            field=models.TextField(verbose_name="Текст поста"),
+            model_name='post',
+            name='text',
+            field=models.TextField(verbose_name='Текст поста'),
         ),
     ]

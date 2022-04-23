@@ -8,38 +8,38 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("posts", "0005_auto_20220318_2218"),
+        ('posts', '0005_auto_20220318_2218'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name="post",
-            name="author",
+            model_name='post',
+            name='author',
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name="posts",
+                related_name='posts',
                 to=settings.AUTH_USER_MODEL,
-                verbose_name="Автор сообщения",
+                verbose_name='Автор сообщения',
             ),
         ),
         migrations.AlterField(
-            model_name="post",
-            name="group",
+            model_name='post',
+            name='group',
             field=models.ForeignKey(
                 blank=True,
-                help_text="Выберите группу для публикации сообщения",
+                help_text='Выберите группу для публикации сообщения',
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
-                related_name="group_post",
-                to="posts.Group",
-                verbose_name="Группа сообщения",
+                related_name='group_post',
+                to='posts.Group',
+                verbose_name='Группа сообщения',
             ),
         ),
         migrations.AlterField(
-            model_name="post",
-            name="text",
+            model_name='post',
+            name='text',
             field=models.TextField(
-                help_text="Напечатайте сообщение", verbose_name="Текст поста"
+                help_text='Напечатайте сообщение', verbose_name='Текст поста'
             ),
         ),
     ]

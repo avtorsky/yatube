@@ -9,66 +9,66 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("posts", "0008_post_image"),
+        ('posts', '0008_post_image'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name="post",
-            name="text",
+            model_name='post',
+            name='text',
             field=models.TextField(
-                help_text="Напечатайте сообщение",
-                verbose_name="Текст сообщения",
+                help_text='Напечатайте сообщение',
+                verbose_name='Текст сообщения',
             ),
         ),
         migrations.CreateModel(
-            name="Comment",
+            name='Comment',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.AutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
                 (
-                    "text",
+                    'text',
                     models.TextField(
-                        help_text="Напечатайте комментарий",
-                        verbose_name="Текст комментария",
+                        help_text='Напечатайте комментарий',
+                        verbose_name='Текст комментария',
                     ),
                 ),
                 (
-                    "created",
+                    'created',
                     models.DateTimeField(
                         auto_now_add=True,
-                        verbose_name="Время публикации комментария",
+                        verbose_name='Время публикации комментария',
                     ),
                 ),
                 (
-                    "author",
+                    'author',
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="comments",
+                        related_name='comments',
                         to=settings.AUTH_USER_MODEL,
-                        verbose_name="Автор комментария",
+                        verbose_name='Автор комментария',
                     ),
                 ),
                 (
-                    "post",
+                    'post',
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="comments",
-                        to="posts.Post",
-                        verbose_name="Прокомментированное сообщение",
+                        related_name='comments',
+                        to='posts.Post',
+                        verbose_name='Прокомментированное сообщение',
                     ),
                 ),
             ],
             options={
-                "verbose_name_plural": "Комментарии",
-                "ordering": ("-created",),
+                'verbose_name_plural': 'Комментарии',
+                'ordering': ('-created',),
             },
         ),
     ]
