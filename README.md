@@ -13,6 +13,10 @@ Networking service concept developed under the [Practicum](https://practicum.yan
 * SQLite 3.32.3
 
 ## Changelog
+Release 20220425:
+* fix(./yatube/posts/): alter Post model, add unit testing for broken pixel in PostForm
+* fix(./yatube/posts/): alter Follow model constraints
+
 Release 20220424:
 * fix(./yatube/posts/): MVT improvements after code review
 
