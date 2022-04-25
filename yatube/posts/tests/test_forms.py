@@ -1,3 +1,4 @@
+from re import T
 import shutil
 import tempfile
 from http import HTTPStatus
@@ -20,6 +21,7 @@ PIXEL = (
     b'\x02\x00\x01\x00\x00\x02\x02\x0C'
     b'\x0A\x00\x3B'
 )
+NOT_A_PIXEL = b''
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
@@ -106,6 +108,28 @@ class PostsFormTests(TestCase):
             response,
             self.PROFILE_VIEW,
         )
+
+    def test_posts_broken_image_form_dont_creates_new_post_entry_in_db(self):
+        """Проверяем, что при отправке невалидной формы со страницы создания поста
+        новая запись в базе данных не создаётся."""
+        broken_pixel_uploaded = SimpleUploadedFile(
+            name='test_broken_pixel.txt',
+            content=NOT_A_PIXEL,
+            content_type='text/plain',
+        )
+        form_data = {
+            'text': 'Привет, битый друг',
+            'image': broken_pixel_uploaded,
+        }
+        self.authorized_client.post(
+            POST_CREATE_VIEW,
+            data=form_data,
+            follow=True,
+        )
+        post = Post.objects.filter(
+            author=self.user, image=form_data['image']
+        ).first()
+        self.assertIsNone(post)
 
     def test_posts_valid_form_edit_post_entry_in_db(self):
         """Проверяем, что при отправке валидной формы со страницы

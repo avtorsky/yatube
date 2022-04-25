@@ -39,7 +39,7 @@ class Post(models.Model):
         verbose_name='Группа сообщения',
     )
     image = models.ImageField(
-        'Иллюстрация сообщения', upload_to='posts/', blank=True
+        'Иллюстрация сообщения', upload_to='posts/', blank=True, null=True
     )
 
     class Meta:
@@ -97,6 +97,10 @@ class Follow(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=('user', 'author'), name='profile_follow_rule'
+            ),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F('author')),
+                name='prevent_self_follow_rule',
             ),
         ]
         verbose_name_plural = 'Подписчики'
