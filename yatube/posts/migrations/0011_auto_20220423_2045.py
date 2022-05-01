@@ -17,10 +17,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='comment',
             name='created',
-            field=models.DateTimeField(auto_now_add=True, verbose_name='Дата и время комментария'),
+            field=models.DateTimeField(
+                auto_now_add=True, verbose_name='Дата и время комментария'
+            ),
         ),
         migrations.AddConstraint(
             model_name='follow',
-            constraint=models.UniqueConstraint(fields=('user', 'author'), name='profile_follow_rule'),
+            constraint=models.UniqueConstraint(
+                fields=('user', 'author'), name='profile_follow_rule'
+            ),
         ),
     ]
