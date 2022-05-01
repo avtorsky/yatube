@@ -1,4 +1,3 @@
-from re import T
 import shutil
 import tempfile
 from http import HTTPStatus
