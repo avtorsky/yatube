@@ -13,6 +13,12 @@ Networking service concept developed under the [Practicum](https://practicum.yan
 * SQLite 3.32.3
 
 ## Changelog
+Release 20220503:
+* ci: Nginx configuration && production build
+
+Release 20220501:
+* feat(./yatube/yatube/): add Django debug toolbar
+
 Release 20220425:
 * fix(./yatube/posts/): alter Post model, add unit testing for broken pixel in PostForm
 * fix(./yatube/posts/): alter Follow model constraints
@@ -58,12 +64,19 @@ Release 20220211:
 * docs(./README.md): repository init, venv && Django setup
 
 ## Environment
-* `source venv/bin/activate` initiates virtual environment
-* `pip install -r requirements.txt` installing all dependencies
+Production build: https://yatube.avtorskydeployed.online
 
 ## Deploy
-* `bash linting-pipe.sh` initiate linting && unit testing pipe
-* `source venv/bin/activate && cd yatube && python3 manage.py runserver` stage an HTTP server
+Initiate unit testing pipe, install all dependencies && stage an HTTP server
+
+```
+bash lintme.sh
+python -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+cd yatube
+python3 manage.py runserver
+```
 
 ## Contact
 __GitHub:__ <a href="https://github.com/avtorsky" target="_blank">https://github.com/avtorsky</a>
