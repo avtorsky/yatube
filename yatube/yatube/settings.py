@@ -1,4 +1,17 @@
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from dotenv import load_dotenv
+
+load_dotenv()
+sentry_sdk.init(
+    dsn=os.getenv('DSN_KEY'),
+    integrations=[
+        DjangoIntegration(),
+    ],
+    traces_sample_rate=1.0,
+    send_default_pii=True,
+)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,17 +25,11 @@ CACHES = {
 
 POSTS_INDEX_CACHE_KEY = 'index_page'
 
-SECRET_KEY = 't)v)_23vfrpxplel-_@regncdq80@g4xk_^!51q^7zk%rar2=l'
+SECRET_KEY = os.getenv('DJANGO_KEY')
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '[::1]',
-    'testserver',
-    'yatube.avtorskydeployed.online',
-]
+ALLOWED_HOSTS = os.getenv('HOSTS').split(',')
 
 INSTALLED_APPS = [
     'posts.apps.PostsConfig',
@@ -41,7 +48,9 @@ INSTALLED_APPS = [
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.getenv('ABS_MEDIA_ROOT')
+
+STATIC_ROOT = os.getenv('ABS_STATIC_ROOT')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,8 +88,12 @@ WSGI_APPLICATION = 'yatube.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
@@ -103,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -125,8 +138,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
+INTERNAL_IPS = os.getenv('INTERNAL_IPS').split(',')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
