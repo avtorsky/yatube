@@ -10,9 +10,15 @@
 Networking service concept developed under the [Practicum](https://practicum.yandex.com/) online bootcamp with the following stack:
 * Python 3.7.9
 * Django 2.2.19
-* SQLite 3.32.3
+* Gunicorn 20.1.0
+* PostgreSQL DBMS 12.11
 
 ## Changelog
+Release 20220715:
+* ci: swap config from uWSGI to Gunicorn as WSGI socket
+* ci: upgrade from SQLite to PostgreSQL as DBMS in production
+* fix(./yatube/yatube/settings.py): additional security improvements && Sentry setup
+
 Release 20220503:
 * ci: Nginx configuration && production build
 
@@ -69,12 +75,18 @@ Production build: https://yatube.avtorskydeployed.online
 ## Deploy
 Initiate unit testing pipe, install all dependencies && stage an HTTP server
 
-```
+```bash
 bash lintme.sh
 python -m venv venv
 source venv/bin/activate
 pip3 install -r requirements.txt
+```
+
+Declare DJANGO_KEY, HOSTS, ROOT && DB variables at .env file then proceed:
+
+```bash
 cd yatube
+python3 manage.py migrate
 python3 manage.py runserver
 ```
 
